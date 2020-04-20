@@ -7,6 +7,8 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
+import { SharedElement } from 'react-navigation-shared-element';
+
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -19,13 +21,19 @@ export default props => {
         onPress(item);
       }}>
       <View style={styles.product}>
-        <Image
-          source={{uri: item.image}}
-          style={styles.image}
-          resizeMode="contain"
-        />
-        <Text style={styles.text} numberOfLines={1}>{item.name}</Text>
-        <Text style={styles.text}>{`$ ${item.price}`}</Text>
+        <SharedElement id={`item.${item.key}.photo`}>
+          <Image
+            source={{uri: item.image}}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        </SharedElement>
+        <SharedElement id={`item.${item.key}.name`}>
+          <Text style={styles.text} numberOfLines={1}>{item.name}</Text>
+        </SharedElement>
+        <SharedElement id={`item.${item.key}.price`}>
+          <Text style={styles.text}>{`$ ${item.price}`}</Text>
+        </SharedElement>
       </View>
     </TouchableOpacity>
   );

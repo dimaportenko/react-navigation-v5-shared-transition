@@ -13,9 +13,11 @@ import 'react-native-gesture-handler';
 import ProductScreen from './src/screens/ProductDetails';
 import ProductList from './src/screens/ProductList';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+// import {createStackNavigator} from '@react-navigation/stack';
+import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 
-const Stack = createStackNavigator();
+const Stack = createSharedElementStackNavigator();
+// const Stack = createStackNavigator();
 
 const App = () => {
   return (
@@ -32,7 +34,22 @@ const App = () => {
           options={navigation => ({
             title: navigation.route.params.product.name,
             headerBackTitleVisible: false,
+            cardStyleInterpolator: ({current: {progress}}) => {
+              return {
+                cardStyle: {
+                  opacity: progress,
+                },
+              };
+            },
           })}
+          sharedElementsConfig={(route, otherRoute, showing) => {
+            const {product} = route.params;
+            return [
+              `item.${product.key}.photo`,
+              `item.${product.key}.name`,
+              `item.${product.key}.price`,
+            ];
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

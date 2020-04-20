@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {useRoute} from '@react-navigation/native';
+import { SharedElement } from 'react-navigation-shared-element';
 
 export default () => {
   const route = useRoute();
@@ -8,14 +9,20 @@ export default () => {
 
   return (
     <ScrollView>
-      <Image
-        source={{uri: product.image}}
-        resizeMode="contain"
-        style={styles.image}
-      />
+      <SharedElement id={`item.${product.key}.photo`}>
+        <Image
+          source={{uri: product.image}}
+          resizeMode="contain"
+          style={styles.image}
+        />
+      </SharedElement>
       <View style={styles.titleWrap}>
-        <Text style={styles.text}>{product.name}</Text>
-        <Text style={styles.text}>{`$ ${product.price}`}</Text>
+        <SharedElement id={`item.${product.key}.name`}>
+          <Text style={styles.text}>{product.name}</Text>
+        </SharedElement>
+        <SharedElement id={`item.${product.key}.price`}>
+          <Text style={styles.text}>{`$ ${product.price}`}</Text>
+        </SharedElement>
       </View>
       <Text style={styles.description}>{product.description}</Text>
     </ScrollView>
